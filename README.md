@@ -8,6 +8,7 @@
  to do ->
 ```
 add confuser-ex exceptions/logging handler
+add support for dependencies ( very important )
 use ajax for the form upload
 
 ```
