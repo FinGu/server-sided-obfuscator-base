@@ -5,25 +5,24 @@ if(!isset($_SESSION))
     session_start();
 
 class c_api{
-    private static $program_key;
-    private static $api_key;
-
     public static function c_init($c_version, $c_program_key, $c_api_key){
         try{
             $ch = curl_init(self::$api_link . "ins_handler.php?type=init");
             curl_setopt($ch, CURLOPT_USERAGENT, self::$user_agent);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-            curl_setopt($ch, CURLOPT_CAINFO, getcwd() . self::$pem);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_PINNEDPUBLICKEY, self::$pub_key);
 
-            self::$program_key = $c_program_key;
-            self::$api_key = $c_api_key;
+            $_SESSION["program_key"] = $c_program_key;
+            $_SESSION["api_key"] = $c_api_key;
 
             $values = [
                 "version" => $c_version,
                 "api_version" => "3.0b",
-                "program_key" => self::$program_key,
-                "api_key" => self::$api_key
+                "program_key" => $_SESSION["program_key"],
+                "api_key" => $_SESSION["api_key"]
             ];
 
             curl_setopt($ch, CURLOPT_POSTFIELDS, $values);
@@ -60,13 +59,15 @@ class c_api{
         curl_setopt($ch, CURLOPT_USERAGENT, self::$user_agent);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        curl_setopt($ch, CURLOPT_CAINFO, getcwd() . self::$pem);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_PINNEDPUBLICKEY, self::$pub_key);
 
         $values = [
             "username" => $c_username,
             "password" => $c_password,
-            "program_key" => self::$program_key,
-            "api_key" => self::$api_key
+            "program_key" => $_SESSION["program_key"],
+            "api_key" => $_SESSION["api_key"]
         ];
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $values);
@@ -110,15 +111,17 @@ class c_api{
         curl_setopt($ch, CURLOPT_USERAGENT, self::$user_agent);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        curl_setopt($ch, CURLOPT_CAINFO, getcwd() . self::$pem);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_PINNEDPUBLICKEY, self::$pub_key);
 
         $values = [
             "username" => $c_username,
             "email" => $c_email,
             "password" => $c_password,
             "token" => $c_token,
-            "program_key" => self::$program_key,
-            "api_key" => self::$api_key
+            "program_key" => $_SESSION["program_key"],
+            "api_key" => $_SESSION["api_key"]
         ];
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $values);
@@ -165,14 +168,16 @@ class c_api{
         curl_setopt($ch, CURLOPT_USERAGENT, self::$user_agent);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        curl_setopt($ch, CURLOPT_CAINFO, getcwd() . self::$pem);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_PINNEDPUBLICKEY, self::$pub_key);
 
         $values = [
             "username" => $c_username,
             "password" => $c_password,
             "token" => $c_token,
-            "program_key" => self::$program_key,
-            "api_key" => self::$api_key
+            "program_key" => $_SESSION["program_key"],
+            "api_key" => $_SESSION["api_key"]
         ];
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $values);
@@ -220,19 +225,21 @@ class c_api{
     }
     //no need for server sided variables here cause php already is server side
     public static function c_log($c_message){
-        if(empty(c_userdata::$username)) c_userdata::$username = "NONE";
+        if(empty($_SESSION["username"]) || !isset($_SESSION["username"])) $_SESSION["username"] = "NONE";
 
         $ch = curl_init(self::$api_link . "ins_handler.php?type=log");
         curl_setopt($ch, CURLOPT_USERAGENT, self::$user_agent);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        curl_setopt($ch, CURLOPT_CAINFO, getcwd() . self::$pem);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_PINNEDPUBLICKEY, self::$pub_key);
 
         $values = [
-            "username" => c_userdata::$username,
+            "username" => $_SESSION["username"],
             "message" => $c_message,
-            "program_key" => self::$program_key,
-            "api_key" => self::$api_key
+            "program_key" => $_SESSION["program_key"],
+            "api_key" => $_SESSION["api_key"]
         ];
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $values);
@@ -247,5 +254,5 @@ class c_api{
     }
     private static $api_link = "https://cauth.me/api/";
     private static $user_agent = "Mozilla cAuth";
-    private static $pem = "/api/cacert.pem";
+    private static $pub_key = "sha256//Mk6vhbkCoRzUhXoUryC8tjIxmehtu4uLVhwqGQM9Cmc=";
 }
