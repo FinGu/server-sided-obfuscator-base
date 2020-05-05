@@ -1,6 +1,6 @@
 <?php
 include("api/c_api.php");
-c_api::c_init("version", "program key", "api key");
+c_api::c_init("1.0", "FLc25OasozrIpXFTfHnV6vdMlgE9A1oWJUyY7Dl8885", "kappa");
 
 //guide, create a program at cauth.me, put the version, program key and api key, done
 
