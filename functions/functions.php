@@ -1,7 +1,7 @@
 <?php
 
 function obfuscate($obf_file_location, $proj_file_location){
-    shell_exec(getcwd() . "\obfuscator\Confuser.CLI.exe " . $proj_file_location);
+    shell_exec(getcwd() . "\obfuscator\Confuser.CLI.exe " . escapeshellarg($proj_file_location));
 
     $obf_file = realpath("uploads/obfuscated/" . pathinfo($obf_file_location)['basename']);
 
