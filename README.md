@@ -4,3 +4,7 @@
  the obfuscator used in this project is ConfuserEx, the authentication service is cauth.me
  
  please contact me in case of issues :D
+ 
+ to do ->
+add confuser-ex exceptions/logging handler
+
