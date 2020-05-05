@@ -7,4 +7,5 @@
  
  to do ->
 add confuser-ex exceptions/logging handler
+use ajax for the form upload
 
