@@ -6,6 +6,6 @@
  please contact me in case of issues :D
  
  to do ->
-add confuser-ex exceptions/logging handler
-use ajax for the form upload
+*add confuser-ex exceptions/logging handler
+*use ajax for the form upload
 
