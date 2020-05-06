@@ -94,7 +94,6 @@ function download_file($filename){
     header("Pragma: public");
     header("Cache-Control: no-cache, must-revalidate");
     header("Content-Disposition: attachment; filename=".basename($filename).";");
-    header("Content-Transfer-Encoding: binary");
     header("Content-Length: ".filesize($filename));
 
     @readfile($filename);
