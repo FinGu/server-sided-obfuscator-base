@@ -1,17 +1,47 @@
 <?php
 
-function obfuscate($obf_file_location, $proj_file_location){
-    shell_exec(getcwd() . "\obfuscator\Confuser.CLI.exe " . escapeshellarg($proj_file_location));
+function obfuscate($obf_file_location, $proj_file_location, $dependencies = array())
+{
+    //here i perform the obfuscation task and save the output of cfex's console to '$data' ⬇
+    $data = shell_exec(getcwd() . "\obfuscator\Confuser.CLI.exe " . escapeshellarg($proj_file_location));
 
     $obf_file = realpath("uploads/obfuscated/" . pathinfo($obf_file_location)['basename']);
 
     unlink(realpath($obf_file_location));
 
-    download_file($obf_file);
+    $zip_file = pack_assembly_with_info($obf_file, $data, $dependencies);
+    //pack the obf file + dependencies (if there are) with the cfex console output
+
+    download_file($zip_file);
 
     unlink($obf_file);
 
+    unlink(realpath($zip_file));
+
     unlink($proj_file_location);
+}
+
+function pack_assembly_with_info($exe_file, $obf_info, $dependencies = array()){
+    $zip = new ZipArchive;
+
+    if(!empty(pathinfo($exe_file)['filename'])) //this is in case the obfuscation wasnt successfull
+        $zip_output = "uploads/obfuscated/" . pathinfo($exe_file)['filename'] . '.zip';
+    else
+        $zip_output = "uploads/obfuscated/" . uniqid() . '.zip';
+
+    $zip->open($zip_output, ZipArchive::CREATE); //creates a zip file with the exe's name.zip
+
+    $zip->addFile($exe_file, pathinfo($exe_file)['basename']); //add the real exe
+
+    $zip->addFromString("obf_info.txt", $obf_info); //add the cfex output here
+
+    if(!empty($dependencies)) //if there are dependencies
+        foreach($dependencies as &$deps) //for each dependencies in the dependency array
+            $zip->addFile($deps, pathinfo($deps)['basename']); //add the dependency to the zip file
+
+    $zip->close();
+
+    return $zip_output;
 }
 
 function unpack_to_return_the_exe($zip_location){ //CAN ONLY CONTAINS ONE EXE

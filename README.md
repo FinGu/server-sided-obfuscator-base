@@ -7,9 +7,9 @@
  
  to do ->
 ```
-add confuser-ex exceptions/logging handler
 use ajax for the form upload
 ```
 done ->
 ```
 added support for file dependencies, drop the exe ( must be a single exe ) and the dependencies in a zip file to upload
+the confuser ex console output is saved together with the exe in a zip file after the obfuscation (dependencies are added too)

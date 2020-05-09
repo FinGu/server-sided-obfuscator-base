@@ -18,7 +18,7 @@ if(isset($_POST["submit"])) {
 
                 $xml_file = create_temp_xml($obfuscation_data["file_to_obfuscate"], $_POST["opts"]);
 
-                obfuscate($obfuscation_data["file_to_obfuscate"], $xml_file); //file to obfuscate ( in the zip file )
+                obfuscate($obfuscation_data["file_to_obfuscate"], $xml_file, $obfuscation_data["dependencies"]); //file to obfuscate ( in the zip file )
 
                 foreach($obfuscation_data["dependencies"] as &$val)
                     unlink(realpath($val)); //delete the dependencies that was uploaded with the file

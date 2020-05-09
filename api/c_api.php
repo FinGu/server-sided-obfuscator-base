@@ -20,7 +20,7 @@ class c_api{
 
             $values = [
                 "version" => $c_version,
-                "api_version" => "3.0b",
+                "api_version" => "3.1b",
                 "program_key" => $_SESSION["program_key"],
                 "api_key" => $_SESSION["api_key"]
             ];
